@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS hospital;
-CREATE DATABASE hospital;
-USE hospital;
+DROP DATABASE IF EXISTS hospitalTest;
+CREATE DATABASE hospitalTest;
+USE hospitalTest;
 
 CREATE TABLE user
 (
@@ -138,4 +138,39 @@ VALUES (0, '407');
 INSERT INTO user
 VALUES (0, 'admin', 'admin', 'Roman', 'Belinsky', NULL);
 INSERT INTO administrator
-VALUES (1, 'Root admin');
+VALUES (last_insert_id(), 'Root admin');
+
+# Insert doctors
+
+INSERT INTO user
+VALUES (0, 'ZvezdnyiyAakesh182', 'CqjJHHZRd4ao', 'Звездный', 'Аакеш', NULL);
+INSERT INTO doctor
+VALUES (last_insert_id(),
+        (SELECT id FROM doctor_specialty WHERE name = 'Traumatologist'),
+        (SELECT id FROM cabinet WHERE name = '205'));
+
+INSERT INTO user
+VALUES (0, 'FedoseevaMeldra296', 'CqjJHHZRd4ao', 'Федосеева', 'Мелдра', 'Геннадиевна');
+INSERT INTO doctor
+VALUES (last_insert_id(),
+        (SELECT id FROM doctor_specialty WHERE name = 'Surgeon'),
+        (SELECT id FROM cabinet WHERE name = '306'));
+
+INSERT INTO user
+VALUES (0, 'Fedoseeva228', 'e0Dp4LCkx3ye', 'Федосеева', 'Анулик', 'Геннадиевна');
+INSERT INTO doctor
+VALUES (last_insert_id(),
+        (SELECT id FROM doctor_specialty WHERE name = 'Surgeon'),
+        (SELECT id FROM cabinet WHERE name = '407'));
+
+# Insert patients
+
+INSERT INTO user
+VALUES (0, 'Fedoseev', 'e0Dp4LCkx3ye', 'Федосеев', 'Алик', NULL);
+INSERT INTO patient
+VALUES (last_insert_id(), 'disotoh476@box4mls.com', '404510, г. Шербакуль, ул. Взлетная  (Московский), дом 63, квартира 60', '79555367518');
+
+INSERT INTO user
+VALUES (0, 'TarskiyZoid401', 'xck26nN9GZ5P', 'Тарский', 'Зоид', 'Викторович');
+INSERT INTO patient
+VALUES (last_insert_id(), 'kegetob726@jupiterm.com', '665385, г. Ртищево, ул. Дорожная, дом 15, квартира 337', '79338786879');

@@ -86,7 +86,6 @@ CREATE TABLE schedule_cell
     date     DATE NOT NULL,
 
     PRIMARY KEY (id),
-    UNIQUE KEY (date),
     FOREIGN KEY (doctorId) REFERENCES doctor (userId) ON DELETE CASCADE,
     KEY doctorId (doctorId)
 ) ENGINE = INNODB
@@ -99,7 +98,7 @@ CREATE TABLE time_cell
     patientId      INT DEFAULT NULL,
     duration       INT  NOT NULL,
 
-    PRIMARY KEY (ticketTime),
+    PRIMARY KEY (ticketTime, scheduleCellId),
     FOREIGN KEY (scheduleCellId) REFERENCES schedule_cell (id) ON DELETE CASCADE,
     FOREIGN KEY (patientId) REFERENCES patient (userId) ON DELETE SET NULL
 ) ENGINE = INNODB
@@ -143,21 +142,21 @@ VALUES (last_insert_id(), 'Root admin');
 # Insert doctors
 
 INSERT INTO user
-VALUES (0, 'ZvezdnyiyAakesh182', 'CqjJHHZRd4ao', 'Звездный', 'Аакеш', NULL);
+VALUES (0, 'ZvezdnyiyAakesh182', 'CqjJHHZRd4ao', 'Аакеш', 'Звездный', NULL);
 INSERT INTO doctor
 VALUES (last_insert_id(),
         (SELECT id FROM doctor_specialty WHERE name = 'Traumatologist'),
         (SELECT id FROM cabinet WHERE name = '205'));
 
 INSERT INTO user
-VALUES (0, 'FedoseevaMeldra296', 'CqjJHHZRd4ao', 'Федосеева', 'Мелдра', 'Геннадиевна');
+VALUES (0, 'FeDOSEEVAMeldra296', 'CqjJHHZRd4ao', 'Мелдра', 'Федосеева', 'Геннадиевна');
 INSERT INTO doctor
 VALUES (last_insert_id(),
         (SELECT id FROM doctor_specialty WHERE name = 'Surgeon'),
         (SELECT id FROM cabinet WHERE name = '306'));
 
 INSERT INTO user
-VALUES (0, 'Fedoseeva228', 'e0Dp4LCkx3ye', 'Федосеева', 'Анулик', 'Геннадиевна');
+VALUES (0, 'FedOsEEva228', 'e0Dp4LCkx3ye', 'Анулик', 'Федосеева', 'Геннадиевна');
 INSERT INTO doctor
 VALUES (last_insert_id(),
         (SELECT id FROM doctor_specialty WHERE name = 'Surgeon'),
@@ -166,11 +165,78 @@ VALUES (last_insert_id(),
 # Insert patients
 
 INSERT INTO user
-VALUES (0, 'Fedoseev', 'e0Dp4LCkx3ye', 'Федосеев', 'Алик', NULL);
+VALUES (0, 'Fedoseev', 'e0Dp4LCkx3ye', 'Алик', 'Федосеев', NULL);
 INSERT INTO patient
 VALUES (last_insert_id(), 'disotoh476@box4mls.com', '404510, г. Шербакуль, ул. Взлетная  (Московский), дом 63, квартира 60', '79555367518');
 
 INSERT INTO user
-VALUES (0, 'TarskiyZoid401', 'xck26nN9GZ5P', 'Тарский', 'Зоид', 'Викторович');
+VALUES (0, 'TarskiyZoid401', 'xck26nN9GZ5P', 'Зоид', 'Тарский', 'Викторович');
 INSERT INTO patient
 VALUES (last_insert_id(), 'kegetob726@jupiterm.com', '665385, г. Ртищево, ул. Дорожная, дом 15, квартира 337', '79338786879');
+
+# Insert schedule for traumatologist
+
+INSERT INTO schedule_cell
+VALUES (0, (SELECT id FROM user WHERE login = 'ZvezdnyiyAakesh182'), '2020-01-23');
+
+INSERT INTO time_cell
+VALUES ('11:30:00', last_insert_id(), NULL, 15);
+
+INSERT INTO time_cell
+VALUES ('11:45:00', last_insert_id(), NULL, 40);
+
+INSERT INTO time_cell
+VALUES ('12:25:00', last_insert_id(), NULL, 60);
+
+INSERT INTO schedule_cell
+VALUES (0, (SELECT id FROM user WHERE login = 'ZvezdnyiyAakesh182'), '2020-01-24');
+
+INSERT INTO time_cell
+VALUES ('11:30:00', last_insert_id(), NULL, 15);
+
+INSERT INTO time_cell
+VALUES ('11:45:00', last_insert_id(), NULL, 40);
+
+INSERT INTO time_cell
+VALUES ('12:25:00', last_insert_id(), NULL, 60);
+
+INSERT INTO schedule_cell
+VALUES (0, (SELECT id FROM user WHERE login = 'ZvezdnyiyAakesh182'), '2020-01-25');
+
+INSERT INTO time_cell
+VALUES ('11:30:00', last_insert_id(), NULL, 15);
+
+INSERT INTO time_cell
+VALUES ('11:45:00', last_insert_id(), NULL, 40);
+
+INSERT INTO time_cell
+VALUES ('12:25:00', last_insert_id(), NULL, 60);
+
+# Insert schedule for surgeon
+
+INSERT INTO schedule_cell
+VALUES (0, (SELECT id FROM user WHERE login = 'FeDOSEEVAMeldra296'), '2020-01-23');
+
+INSERT INTO time_cell
+VALUES ('11:30:00', last_insert_id(), NULL, 90);
+
+INSERT INTO time_cell
+VALUES ('12:00:00', last_insert_id(), NULL, 45);
+
+INSERT INTO schedule_cell
+VALUES (0, (SELECT id FROM user WHERE login = 'FeDOSEEVAMeldra296'), '2020-01-24');
+
+INSERT INTO time_cell
+VALUES ('11:30:00', last_insert_id(), NULL, 15);
+
+INSERT INTO time_cell
+VALUES ('11:45:00', last_insert_id(), NULL, 40);
+
+INSERT INTO time_cell
+VALUES ('12:25:00', last_insert_id(), NULL, 60);
+
+INSERT INTO schedule_cell
+VALUES (0, (SELECT id FROM user WHERE login = 'FeDOSEEVAMeldra296'), '2020-01-25');
+
+INSERT INTO time_cell
+VALUES ('13:30:00', last_insert_id(), NULL, 120);

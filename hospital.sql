@@ -240,3 +240,31 @@ VALUES (0, (SELECT id FROM user WHERE login = 'FeDOSEEVAMeldra296'), '2020-01-25
 
 INSERT INTO time_cell
 VALUES ('13:30:00', last_insert_id(), NULL, 120);
+
+# Update time cell
+
+SET @scId = (SELECT id FROM schedule_cell AS sc JOIN time_cell tc ON sc.id = tc.scheduleCellId
+          WHERE date = '2020-01-24'
+            AND ticketTime = '11:45:00'
+            AND doctorId = (SELECT id FROM user JOIN doctor d ON user.id = d.userId WHERE login = 'ZvezdnyiyAakesh182'));
+
+UPDATE time_cell SET patientId = (SELECT id FROM user JOIN patient p ON user.id = p.userId WHERE login = 'TarskiyZoid401')
+WHERE scheduleCellId = @scId AND ticketTime = '11:45:00';
+
+
+SET @scId = (SELECT id FROM schedule_cell AS sc JOIN time_cell tc ON sc.id = tc.scheduleCellId
+          WHERE date = '2020-01-25'
+            AND ticketTime = '13:30:00'
+            AND doctorId = (SELECT id FROM user JOIN doctor d ON user.id = d.userId WHERE login = 'FeDOSEEVAMeldra296'));
+
+UPDATE time_cell SET patientId = (SELECT id FROM user JOIN patient p ON user.id = p.userId WHERE login = 'TarskiyZoid401')
+WHERE scheduleCellId = @scId AND ticketTime = '13:30:00';
+
+
+SET @scId = (SELECT id FROM schedule_cell AS sc JOIN time_cell tc ON sc.id = tc.scheduleCellId
+          WHERE date = '2020-01-23'
+            AND ticketTime = '11:30:00'
+            AND doctorId = (SELECT id FROM user JOIN doctor d ON user.id = d.userId WHERE login = 'ZvezdnyiyAakesh182'));
+
+UPDATE time_cell SET patientId = (SELECT id FROM user JOIN patient p ON user.id = p.userId WHERE login = 'Fedoseev')
+WHERE scheduleCellId = @scId AND ticketTime = '11:30:00';

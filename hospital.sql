@@ -2,6 +2,12 @@ DROP DATABASE IF EXISTS hospitalTest;
 CREATE DATABASE hospitalTest;
 USE hospitalTest;
 
+# Индексы для primary key, foreign key и unique key MySql создаёт автоматически, пожтому далее их будем игнорировать.
+# В таблице user необходимо создать индексы для атрибутов password, firstName, lastName и patronymic,
+# так как при лоигне будет БД будет часто обращаться к атрибуту password.
+# Также будет часто происходить частое обращение firstName, lastName и patronymic при различного рода выборках, join и тд.
+# Ко всему прочему, пользователей может быть огромное количество + это родительская таблица для всех типов пользователей.
+
 CREATE TABLE user
 (
     id         INT         NOT NULL AUTO_INCREMENT,
@@ -17,7 +23,8 @@ CREATE TABLE user
     UNIQUE KEY (login),
     KEY firstName (firstName),
     KEY lastName (lastName),
-    KEY patronymic (patronymic)
+    KEY patronymic (patronymic),
+    KEY password (password)
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8;
 
@@ -61,9 +68,7 @@ CREATE TABLE doctor
     PRIMARY KEY (userId),
     FOREIGN KEY (userId) REFERENCES user (id) ON DELETE CASCADE,
     FOREIGN KEY (specialtyId) REFERENCES doctor_specialty (id) ON DELETE CASCADE,
-    FOREIGN KEY (cabinetId) REFERENCES cabinet (id) ON DELETE SET NULL,
-    KEY specialtyName (specialtyId),
-    KEY cabinetId (cabinetId)
+    FOREIGN KEY (cabinetId) REFERENCES cabinet (id) ON DELETE SET NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8;
 
@@ -79,6 +84,9 @@ CREATE TABLE patient
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8;
 
+# Атрибут date также очень часто возникает в выборке,
+# к тому же, расписание может быть огромным, поэтому индексируя этот атрибут мы выйгрываем в скорости.
+
 CREATE TABLE schedule_cell
 (
     id       INT  NOT NULL AUTO_INCREMENT,
@@ -87,9 +95,12 @@ CREATE TABLE schedule_cell
 
     PRIMARY KEY (id),
     FOREIGN KEY (doctorId) REFERENCES doctor (userId) ON DELETE CASCADE,
-    KEY doctorId (doctorId)
+    KEY date (date)
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8;
+
+# Атрибут ticketTine также очень часто возникает в выборке,
+# к тому же, расписание может быть огромным, поэтому индексируя этот атрибут мы выйгрываем в скорости.
 
 CREATE TABLE time_cell
 (
@@ -100,7 +111,8 @@ CREATE TABLE time_cell
 
     PRIMARY KEY (ticketTime, scheduleCellId),
     FOREIGN KEY (scheduleCellId) REFERENCES schedule_cell (id) ON DELETE CASCADE,
-    FOREIGN KEY (patientId) REFERENCES patient (userId) ON DELETE SET NULL
+    FOREIGN KEY (patientId) REFERENCES patient (userId) ON DELETE SET NULL,
+    KEY ticketTime (ticketTime)
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8;
 

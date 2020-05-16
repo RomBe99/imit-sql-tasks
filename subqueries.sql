@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS subqueriesTest;
+CREATE DATABASE subqueriesTest;
+USE subqueriesTest;
+
 # Таблица команды - тренеры
 
 CREATE TABLE teams_and_coaches

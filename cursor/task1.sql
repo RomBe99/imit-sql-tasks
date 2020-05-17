@@ -45,13 +45,12 @@ BEGIN
 
     DECLARE cur CURSOR FOR SELECT result FROM season;
 
-    DECLARE CONTINUE HANDLER FOR NOT FOUND
-        SET isEnd = true;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET isEnd = true;
 
     OPEN cur;
 
     # Начинаем перебор таблицы.
-    readLoop:loop
+    readLoop:LOOP
         SET prevPos = curPos;
         FETCH cur INTO curPos;
 
